@@ -23,8 +23,7 @@
         android:layout_toRightOf="@id/icon"
         android:ellipsize="marquee"
         android:text="Description"
-        android:textSize="12sp"
-        android:singleLine="true" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/firstLine"
