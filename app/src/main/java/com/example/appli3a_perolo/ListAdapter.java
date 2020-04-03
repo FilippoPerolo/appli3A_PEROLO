@@ -61,15 +61,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final Symbol currentSymbol = values.get(position);
         holder.txtHeader.setText(currentSymbol.getName());
-        /* holder.txtHeader.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                remove(position);
-            }
-        }); */
-
-        holder.txtFooter.setText(currentSymbol.getSymbol());
+        holder.txtFooter.setText(currentSymbol.getExchange());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

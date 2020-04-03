@@ -66,16 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void showList(List<Symbol> symbolsList) {
             recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             recyclerView.setHasFixedSize(true);
             // use a linear layout manager
             layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
-          /*  List<String> input = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
-                input.add("Test" + i);
-            } */
+
             // define an adapter
             mAdapter = new ListAdapter(symbolsList);
             recyclerView.setAdapter(mAdapter);
