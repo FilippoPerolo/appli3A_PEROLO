@@ -11,20 +11,33 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<Symbol> values;
 
+    private OnNoteListener mOnNoteListener;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // each data item is just a string in this case
         TextView txtHeader;
         TextView txtFooter;
         View layout;
 
-        public ViewHolder(View v) {
+        OnNoteListener onNoteListener;
+
+        public ViewHolder(View v, OnNoteListener onNoteListener) {
             super(v);
             layout = v;
             txtHeader = (TextView) v.findViewById(R.id.firstLine);
             txtFooter = (TextView) v.findViewById(R.id.secondLine);
+
+            this.onNoteListener = onNoteListener;
+
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
         }
     }
 
@@ -39,8 +52,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(List<Symbol> myDataset) {
+    public ListAdapter(List<Symbol> myDataset, OnNoteListener onNoteListener) {
         values = myDataset;
+        this.mOnNoteListener = onNoteListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -50,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.row_layout, parent,false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, mOnNoteListener);
         return vh;
     }
 
@@ -60,7 +74,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Symbol currentSymbol = values.get(position);
-        holder.txtHeader.setText(currentSymbol.getName());
+        holder.txtHeader.setText(currentSymbol.getSymbol());
 
         holder.txtFooter.setText(currentSymbol.getExchange());
     }
@@ -69,5 +83,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return values.size();
+    }
+
+    public interface OnNoteListener{
+        void onNoteClick(int position);
     }
 }

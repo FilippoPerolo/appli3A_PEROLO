@@ -1,8 +1,10 @@
 package com.example.appli3a_perolo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListAdapter.OnNoteListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(layoutManager);
 
             // define an adapter
-            mAdapter = new ListAdapter(symbolsList);
+            mAdapter = new ListAdapter(symbolsList, this);
             recyclerView.setAdapter(mAdapter);
         }
 
@@ -120,5 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void showError() {
         Toast.makeText(this, "Api Error", Toast.LENGTH_SHORT).show();
+    }
+
+    // nouvelle activité
+    @Override
+    public void onNoteClick(int position) {
+        Intent intent = new Intent(this, SomeActivity.class);
+        startActivity(intent);
+       /* Intent intent = new Intent(this, NewActivity.java);
+        startActivity(intent); */
     }
 }
