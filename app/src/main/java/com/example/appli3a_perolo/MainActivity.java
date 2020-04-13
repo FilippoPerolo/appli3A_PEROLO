@@ -4,20 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -86,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
 
         SymbolAPI symbolAPI = retrofit.create(SymbolAPI.class);
 
-        Call<APiFinanceResponse> call = symbolAPI.getSymbolResponse();
-        call.enqueue(new Callback<APiFinanceResponse>() {
+        Call<RestFinanceResponse> call = symbolAPI.getSymbolResponse();
+        call.enqueue(new Callback<RestFinanceResponse>() {
             @Override
-            public void onResponse(Call<APiFinanceResponse> call, Response<APiFinanceResponse> response) {
+            public void onResponse(Call<RestFinanceResponse> call, Response<RestFinanceResponse> response) {
                 if (response.isSuccessful() && response.body()!=null) {
                     List<Symbol> symbolsList = response.body().getSymbolsList();
                     Toast.makeText(getApplicationContext(), "Api Success", Toast.LENGTH_SHORT).show();
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
             }
 
             @Override
-            public void onFailure(Call<APiFinanceResponse> call, Throwable t) {
+            public void onFailure(Call<RestFinanceResponse> call, Throwable t) {
                 showError();
             }
         });
@@ -129,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
     public void onNoteClick(int position) {
         Intent intent = new Intent(this, SomeActivity.class);
         startActivity(intent);
-       /* Intent intent = new Intent(this, NewActivity.java);
-        startActivity(intent); */
+
     }
 }
