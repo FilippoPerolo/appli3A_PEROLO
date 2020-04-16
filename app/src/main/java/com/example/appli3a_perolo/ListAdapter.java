@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
@@ -13,14 +14,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private OnNoteListener mOnNoteListener;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+    public ListAdapter(Symbol symbol2, SomeActivity someActivity) {
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // each data item is just a string in this case
         TextView txtHeader;
         TextView txtFooter;
         View layout;
+        Button button;
 
         OnNoteListener onNoteListener;
 
@@ -51,7 +53,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         notifyItemRemoved(position);
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    // constructor
     public ListAdapter(List<Symbol> myDataset, OnNoteListener onNoteListener) {
         values = myDataset;
         this.mOnNoteListener = onNoteListener;
@@ -75,7 +77,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final Symbol currentSymbol = values.get(position);
         holder.txtHeader.setText(currentSymbol.getName());
-
         holder.txtFooter.setText(currentSymbol.getSymbol());
     }
 
@@ -84,6 +85,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public int getItemCount() {
         return values.size();
     }
+
 
     public interface OnNoteListener{
         void onNoteClick(int position);

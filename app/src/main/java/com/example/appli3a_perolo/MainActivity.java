@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         } else{
             makeApiCall();
         }
-        //showList();
     }
 
     private List<Symbol> getDataFromCache() {
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
     private void showList(List<Symbol> symbolsList) {
             recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             recyclerView.setHasFixedSize(true);
+
             // use a linear layout manager
             layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
