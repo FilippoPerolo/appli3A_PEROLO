@@ -2,6 +2,10 @@ package com.example.appli3a_perolo;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -35,13 +39,17 @@ public class SomeActivity extends AppCompatActivity {
 
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //Log.d(TAG, "onCreate : called");
+        Log.d(TAG, "onCreate : called");
 
-        Symbol symbol2 = getDataFromCache();
-        showList(symbol2);
-        makeApiCall();
+//        Symbol symbol2 = getDataFromCache();
+        //showList(symbol2);
+        //makeApiCall();
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        return inflater.inflate(R.layout.activity_main, container, false);
+    }
+/*
     private Symbol getDataFromCache() {
         String jsonSymbols = sharedPreferences.getString(Constants.KEY_SYMBOLS_LIST, null);
 
@@ -110,6 +118,6 @@ public class SomeActivity extends AppCompatActivity {
     }
     private void showError() {
         Toast.makeText(this, "Api Error", Toast.LENGTH_SHORT).show();
-    }
+    } */
 
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements ListAdapter.OnNoteListener {
+public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -42,9 +43,9 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
                 .create();
 
         List<Symbol> symbolsList = getDataFromCache();
-        if (symbolsList != null){
+        if (symbolsList != null) {
             showList(symbolsList);
-        } else{
+        } else {
             makeApiCall();
         }
     }
@@ -52,10 +53,11 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
     private List<Symbol> getDataFromCache() {
         String jsonSymbols = sharedPreferences.getString(Constants.KEY_SYMBOLS_LIST, null);
 
-        if (jsonSymbols == null){
+        if (jsonSymbols == null) {
             return null;
-        } else{
-            Type listType = new TypeToken<List<Symbol>>(){}.getType();
+        } else {
+            Type listType = new TypeToken<List<Symbol>>() {
+            }.getType();
             return gson.fromJson(jsonSymbols, listType);
         }
     }
@@ -63,19 +65,24 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
     private static final String BASE_URL = "https://financialmodelingprep.com/";
 
     private void showList(List<Symbol> symbolsList) {
-            recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-            recyclerView.setHasFixedSize(true);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
 
-            // use a linear layout manager
-            layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-            // define an adapter
-            mAdapter = new ListAdapter(symbolsList, this);
-            recyclerView.setAdapter(mAdapter);
-        }
+        // define an adapter
+        mAdapter = new ListAdapter(symbolsList, new ListAdapter.OnItemClickListener() {
+            public void onItemClick(Symbol symbolsList) {
+                Intent intent = new Intent(getApplicationContext(), Activity2.class);
+                startActivity(intent);
+            }
+        });
+        recyclerView.setAdapter(mAdapter);
+    }
 
-    private void makeApiCall(){
+    private void makeApiCall() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -87,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         call.enqueue(new Callback<RestFinanceResponse>() {
             @Override
             public void onResponse(Call<RestFinanceResponse> call, Response<RestFinanceResponse> response) {
-                if (response.isSuccessful() && response.body()!=null) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Symbol> symbolsList = response.body().getSymbolsList();
                     Toast.makeText(getApplicationContext(), "Api Success", Toast.LENGTH_SHORT).show();
                     saveList(symbolsList);
@@ -121,11 +128,4 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.OnNot
         Toast.makeText(this, "Api Error", Toast.LENGTH_SHORT).show();
     }
 
-    // nouvelle activité
-    @Override
-    public void onNoteClick(int position) {
-        Intent intent = new Intent(this, SomeActivity.class);
-        startActivity(intent);
-
-    }
 }
